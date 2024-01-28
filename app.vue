@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { marked } from 'marked'
+import MarkdownIt from 'markdown-it'
+import Shiki from '@shikijs/markdown-it'
+
+const md = MarkdownIt()
+
+md.use(await Shiki({ theme: 'catppuccin-mocha' }))
 
 interface Model {
   id: string
@@ -51,7 +56,7 @@ const nameInput = ref<HTMLInputElement | null>(null)
 onClickOutside(nameInput, () => showNameInput.value = false)
 
 function messageHtml(content: string) {
-  return marked(content, {})
+  return md.render(content, {})
 }
 
 const newMessage = ref('')
@@ -170,7 +175,7 @@ async function send(event: KeyboardEvent) {
         </div>
       </div>
       <div class="grow p-4 overflow-y-scroll">
-        <div v-for="(message, idx) in selectedChat.messages" :key="idx" class="flex gap-4 mb-4">
+        <div v-for="(message, idx) in selectedChat.messages" :key="idx" class="flex gap-4 mb-4 prose dark:prose-invert">
           <div>
             <UAvatar :icon="message.role === 'user' ? 'i-heroicons-user' : 'i-heroicons-cpu-chip'" size="sm" />
           </div>

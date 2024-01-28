@@ -10,18 +10,21 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxt/ui": "^2.11.1",
+    "@shikijs/markdown-it": "1.0.0-beta.0",
+    "@types/markdown-it": "^13.0.7",
     "ai": "^2.2.30",
-    "marked": "^11.1.0"
+    "markdown-it": "^14.0.0",
+    "marked": "^11.1.0",
+    "openai": "^4.24.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.4.6",
     "@nuxt/devtools": "latest",
-    "@nuxt/ui": "^2.11.1",
     "@vueuse/core": "^10.7.0",
     "@vueuse/nuxt": "^10.7.0",
     "eslint": "^8.56.0",
     "nuxt": "^3.8.2",
-    "openai": "^4.24.1",
     "vue": "^3.3.12",
     "vue-router": "^4.2.5"
   }
