@@ -1,5 +1,4 @@
 import OpenAI from 'openai'
-import { OpenAIStream } from 'ai'
 import type { ChatCompletionMessageParam } from 'openai/resources/chat'
 
 export default defineEventHandler(async (event) => {
@@ -17,5 +16,16 @@ export default defineEventHandler(async (event) => {
     max_tokens: body.maxTokens,
   })
 
-  return OpenAIStream(stream)
+  const encoder = new TextEncoder()
+  const responseStream = new ReadableStream({
+    async start(controller) {
+      for await (const chunk of stream) {
+        if (chunk.choices[0].delta.content) {
+          const streamText = chunk.choices[0].delta.content
+          controller.enqueue(encoder.encode(streamText))
+        }
+      }
+    },
+  })
+  return responseStream
 })
