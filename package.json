@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "chato",
   "type": "module",
   "private": true,
   "scripts": {
@@ -7,23 +7,26 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "@nuxt/ui": "^2.11.1",
+    "@mistralai/mistralai": "^0.0.10",
+    "@nuxt/ui": "^2.12.3",
     "@shikijs/markdown-it": "1.0.0-beta.0",
     "@types/markdown-it": "^13.0.7",
     "markdown-it": "^14.0.0",
-    "openai": "^4.24.1"
+    "openai": "^4.26.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.4.6",
-    "@nuxt/devtools": "latest",
-    "@vueuse/core": "^10.7.0",
-    "@vueuse/nuxt": "^10.7.0",
+    "@antfu/eslint-config": "^2.6.3",
+    "@nuxt/devtools": "^1.0.8",
+    "@vueuse/core": "^10.7.2",
+    "@vueuse/nuxt": "^10.7.2",
     "eslint": "^8.56.0",
-    "nuxt": "^3.8.2",
-    "vue": "^3.3.12",
+    "nuxt": "^3.9.3",
+    "vue": "^3.4.15",
     "vue-router": "^4.2.5"
   }
 }

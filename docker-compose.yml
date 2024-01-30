@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: chato_${APP_ENV}
+    build:
+      context: .
+    env_file: .env
+    expose:
+      - 3000
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.chato-${APP_ENV}.loadbalancer.server.port=3000
+
+      - traefik.http.routers.chato-${APP_ENV}.service=chato-${APP_ENV}@docker
+      - traefik.http.routers.chato-${APP_ENV}.rule=Host(`${APP_DOMAIN}`)
+      - traefik.http.routers.chato-${APP_ENV}.entrypoints=web
+      - traefik.http.routers.chato-${APP_ENV}.middlewares=redirect-https
+
+      - traefik.http.routers.chato-${APP_ENV}-secured.service=chato-${APP_ENV}@docker
+      - traefik.http.routers.chato-${APP_ENV}-secured.entrypoints=web-secured
+      - traefik.http.routers.chato-${APP_ENV}-secured.tls=true
+      - traefik.http.routers.chato-${APP_ENV}-secured.rule=Host(`${APP_DOMAIN}`)
+
+      - ${BASIC_AUTH_LABEL}
+
+networks:
+  proxy:
+    external: true
