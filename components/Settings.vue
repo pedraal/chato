@@ -27,7 +27,10 @@ const mistralInputType = ref<'text' | 'password'>('password')
           <UInput v-model="maxTokens" type="number" />
         </UFormGroup>
         <UFormGroup label="Theme" name="theme">
-          <USelectMenu v-model="colorMode.preference" :options="colorOptions" value-attribute="value" option-attribute="label" />
+          <div class="flex gap-2">
+            <USelectMenu v-model="colorMode.preference" :options="colorOptions" value-attribute="value" option-attribute="label" class="grow" />
+            <ColorPicker />
+          </div>
         </UFormGroup>
         <div class="text-right">
           <UButton type="submit">
