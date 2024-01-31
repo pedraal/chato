@@ -9,8 +9,9 @@ export default defineEventHandler(async (event) => {
   const body = await readBody<{ messages: Array<{ role: string, content: string }>, model: string, maxTokens: number }>(event)
 
   const stream = await mistral.chatStream({
-    model: 'mistral-tiny',
+    model: body.model,
     messages: body.messages,
+    temperature: 0.1,
   })
 
   const encoder = new TextEncoder()

@@ -1,37 +1,29 @@
 export default function () {
   const { openAiApiKey, maxTokens, mistralApiKey } = useSettings()
-
   const { activeChat } = useChats()
 
-  const shiftState = useKeyModifier('Shift')
-  const newMessage = ref('')
+  const apiKey = computed(() => {
+    if (activeChat.value?.model.api === 'openai')
+      return openAiApiKey.value
+    else if (activeChat.value?.model.api === 'mistralai')
+      return mistralApiKey.value
+
+    return undefined
+  })
+
+  const input = ref('')
   const sending = ref(false)
   const aiWriting = createEventHook()
-  async function send(event: KeyboardEvent) {
+  async function send() {
     const chat = activeChat.value
     if (!chat)
       return
 
-    if (shiftState.value)
-      return
-
-    event.preventDefault()
     chat.messages.push({
       role: 'user',
-      content: newMessage.value,
+      content: input.value,
     })
-
-    let apiKey: string
-    switch (chat.model.api) {
-      case 'openai':
-        apiKey = openAiApiKey.value
-        break
-      case 'mistral':
-        apiKey = mistralApiKey.value
-        break
-      default:
-        throw new Error(`Unknown API: ${chat.model.api}`)
-    }
+    input.value = ''
 
     const decoder = new TextDecoder()
     fetch(`/api/${chat.model.api}`, {
@@ -39,14 +31,13 @@ export default function () {
       body: JSON.stringify({ messages: chat.messages, model: chat.model.id, maxTokens: maxTokens.value }),
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': apiKey,
+        'x-api-key': apiKey.value,
       },
     })
       .then((response) => {
         if (!response.ok || response.body == null)
           throw new Error('Network response was not ok')
 
-        newMessage.value = ''
         chat.lastMessageAt = new Date()
         chat.messages.push({
           role: 'assistant',
@@ -86,7 +77,8 @@ export default function () {
   }
 
   return {
-    newMessage,
+    apiKey,
+    input,
     sending,
     send,
     aiWriting,

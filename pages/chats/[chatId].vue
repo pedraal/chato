@@ -1,8 +1,9 @@
 <script setup lang="ts">
-const { openAiApiKey, showNav } = useSettings()
+const { showNav } = useSettings()
 const { parseMarkdown } = useMarkdown()
 const { models, activeChat } = useChats()
-const { newMessage, send, sending, aiWriting, deleteMessage } = useChat()
+
+const { apiKey, input, send, sending, aiWriting, deleteMessage } = useChat()
 
 const showNameInput = ref(false)
 const nameInput = ref<HTMLInputElement | null>(null)
@@ -57,7 +58,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="p-2">
-      <UTextarea v-model="newMessage" class="w-full" autofocus :disabled="openAiApiKey === '' || sending" :placeholder="openAiApiKey === '' ? 'Open settings to add your OpenAI API key' : 'Ask something'" @keydown.enter="send" />
+      <UTextarea v-model="input" class="w-full" autofocus :disabled="!apiKey || sending" :placeholder="!apiKey ? 'Open settings to add your API keys' : 'Ask something'" @keydown.enter.exact.prevent="send" />
     </div>
   </div>
 </template>

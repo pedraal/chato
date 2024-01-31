@@ -2,12 +2,12 @@ import type { Chat, Model } from '~/types'
 
 export default function () {
   const models: Model[] = [
-    { id: 'gpt-3.5-turbo-1106', label: 'GPT-3.5 Turbo', api: 'gpt' },
-    { id: 'gpt-4', label: 'GPT-4', api: 'gpt' },
-    { id: 'gpt-4-1106-preview', label: 'GPT-4 Turbo', api: 'gpt' },
-    { id: 'mistral-tiny', label: 'Mistral Tiny', api: 'mistral' },
-    { id: 'mistral-small', label: 'Mistral Small', api: 'mistral' },
-    { id: 'mistral-medium', label: 'Mistral Medium', api: 'mistral' },
+    { id: 'mistral-tiny', label: 'Mistral Tiny', api: 'mistralai' },
+    { id: 'mistral-small', label: 'Mistral Small', api: 'mistralai' },
+    { id: 'mistral-medium', label: 'Mistral Medium', api: 'mistralai' },
+    { id: 'gpt-3.5-turbo-1106', label: 'GPT-3.5 Turbo', api: 'openai' },
+    { id: 'gpt-4', label: 'GPT-4', api: 'openai' },
+    { id: 'gpt-4-1106-preview', label: 'GPT-4 Turbo', api: 'openai' },
   ]
 
   const chats = useLocalStorage<Chat[]>('chats', [])
