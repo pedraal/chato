@@ -44,7 +44,7 @@ onMounted(() => {
     <div ref="messagesContainer" class="grow p-4 overflow-y-auto">
       <div v-for="(message, idx) in activeChat.messages" :key="idx" class="flex gap-4 prose dark:prose-invert group">
         <div class="max-md:hidden">
-          <UAvatar :icon="message.role === 'user' ? 'i-heroicons-user' : 'i-heroicons-cpu-chip'" size="sm" />
+          <UAvatar :icon="message.role === 'user' ? 'i-heroicons-user' : 'i-heroicons-cpu-chip'" size="sm" :ui="{ icon: { base: 'text-primary dark:text-primary' } }" />
         </div>
         <div>
           <p class="font-bold mb-1.5 mt-1">

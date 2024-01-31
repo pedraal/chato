@@ -5,9 +5,9 @@ const { newChat, sortedChats, chats } = useChats()
 
 <template>
   <div class="flex justify-between">
-    <NuxtLink to="/" class="my-2 text-primary-500 font-bold flex items-center gap-2">
+    <NuxtLink to="/" class="text-primary font-bold flex items-center gap-2">
       <UIcon name="i-game-icons-castle" class="shrink-0 scale-150 ml-2" dynamic />
-      Chato
+      Chato AI
     </NuxtLink>
     <UButton icon="i-heroicons-x-mark" color="gray" class="md:hidden" variant="link" @click="showNav = false" />
   </div>
@@ -17,13 +17,13 @@ const { newChat, sortedChats, chats } = useChats()
     </UButton>
     <UButton icon="i-heroicons-cog" color="gray" @click="openSettings = true" />
   </div>
-  <div v-for="chat in sortedChats" :key="chat.id" class="group flex items-center">
-    <NuxtLink :to="`/chats/${chat.id}`" class="flex items-center gap-2 max-w-full md:max-w-52 grow pr-2" active-class="text-primary-500">
+  <div>
+    <NuxtLink v-for="chat in sortedChats" :key="chat.id" :to="`/chats/${chat.id}`" class="flex items-center gap-2 grow px-2 py-1 my-2 group rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800" active-class="bg-gray-50 dark:bg-gray-800 ring-2 ring-primary">
       <UIcon name="i-heroicons-chat-bubble-bottom-center" class="shrink-0" />
-      <span class="truncate">{{ chat.name }}</span>
+      <span class="truncate grow">{{ chat.name }}</span>
+      <div class="invisible group-hover:visible">
+        <UButton icon="i-heroicons-trash" color="red" variant="ghost" @click.prevent="chats = chats.filter(c => c.id !== chat.id)" />
+      </div>
     </NuxtLink>
-    <div class="invisible group-hover:visible">
-      <UButton icon="i-heroicons-trash" variant="soft" color="red" @click="chats = chats.filter(c => c.id !== chat.id)" />
-    </div>
   </div>
 </template>
