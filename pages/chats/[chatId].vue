@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const { showNav } = useSettings()
-const { parseMarkdown } = useMarkdown()
 const { models, activeChat } = useChats()
 
 const { apiKey, input, send, sending, aiWriting, deleteMessage } = useChat()
@@ -42,7 +41,7 @@ onMounted(() => {
       </div>
     </div>
     <div ref="messagesContainer" class="grow p-4 overflow-y-auto">
-      <div v-for="(message, idx) in activeChat.messages" :key="idx" class="flex gap-4 prose dark:prose-invert group">
+      <div v-for="(message, idx) in activeChat.messages" :key="idx" class="flex gap-4 group mb-6">
         <div class="max-md:hidden">
           <UAvatar :icon="message.role === 'user' ? 'i-heroicons-user' : 'i-heroicons-cpu-chip'" size="sm" :ui="{ icon: { base: 'text-primary dark:text-primary' } }" />
         </div>
@@ -53,7 +52,7 @@ onMounted(() => {
               Delete
             </a>
           </p>
-          <div class="[&>pre]:overflow-x-auto [&>pre]:border dark:[&>pre]:border-gray-600 [&>pre]:rounded-lg [&>pre]:p-4 [&>pre]:my-2 [&>pre]:bg-gray-800 [&>p]:mt-0" v-html="parseMarkdown(message.content)" />
+          <MDC class="prose dark:prose-invert max-w-2xl" :value="message.content" />
         </div>
       </div>
     </div>

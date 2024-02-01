@@ -3,7 +3,14 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
   modules: [
-    '@nuxt/ui',
     '@vueuse/nuxt',
+    '@nuxt/ui',
+    '@nuxt/content',
+    '@nuxtjs/mdc',
   ],
+  content: {
+    highlight: {
+      theme: 'catppuccin-mocha',
+    },
+  },
 })
