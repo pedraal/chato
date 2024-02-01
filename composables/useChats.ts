@@ -1,4 +1,21 @@
-import type { Chat, Model } from '~/types'
+interface Model {
+  id: string
+  label: string
+  api: string
+}
+
+interface Message {
+  role: 'system' | 'user' | 'assistant'
+  content: string
+}
+
+interface Chat {
+  id: string
+  name: string
+  model: Model
+  messages: Message[]
+  lastMessageAt: Date
+}
 
 export default function () {
   const models: Model[] = [
