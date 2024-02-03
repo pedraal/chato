@@ -39,7 +39,7 @@ watch(openModal, (v) => {
           <UFormGroup v-if="isDev" label="Debug Mode" name="debugMode">
             <div class="flex items-center gap-2">
               <UToggle v-model="debugApiMode" />
-              <span class="text-sm" :class="{ 'text-gray-400 dark:text-gray-500': !debugApiMode }">Replace third-party API calls by a stream of the sent params</span>
+              <span class="text-sm" :class="{ 'text-gray-400 dark:text-gray-500': !debugApiMode }">Replace third-party API responses by a mocked stream. <br>Use this as a demo but you shouldn't need to use it otherwise</span>
             </div>
           </UFormGroup>
         </template>
@@ -47,9 +47,6 @@ watch(openModal, (v) => {
           <UFormGroup label="API Key" name="openAiApiKey">
             <SettingsApiKeyInput v-model="openAiSettings.apiKey" />
           </UFormGroup>
-          <!-- <p class="text-center text-gray-400 dark:text-gray-500">
-            These are your general settings for this API. You can customize them on a per chat basis.
-          </p> -->
           <UFormGroup label="Chat temperature" name="openAiApiKey">
             <div class="flex items-center gap-2">
               <URange v-model="openAiSettings.temperature" :min="0" :max="1" :step="0.1" />
@@ -72,9 +69,6 @@ watch(openModal, (v) => {
           <UFormGroup label="API Key" name="mistralAiApiKey">
             <SettingsApiKeyInput v-model="mistralAiSettings.apiKey" />
           </UFormGroup>
-          <!-- <p class="text-center text-gray-400 dark:text-gray-500">
-            These are your general settings for this API. You can customize them on a per chat basis.
-          </p> -->
           <UFormGroup label="Chat temperature" name="mistralAiApiKey">
             <div class="flex items-center gap-2">
               <URange v-model="mistralAiSettings.temperature" :min="0" :max="1" :step="0.1" />

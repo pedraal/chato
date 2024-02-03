@@ -9,9 +9,11 @@ const { deleteMessage } = useChat()
 
 const { data, refresh } = await useAsyncData(props.message.id, () => parseMarkdown(props.message.content))
 
-watch(() => props.message.content, () => {
-  refresh()
-})
+watchThrottled(
+  () => props.message.content,
+  () => { refresh() },
+  { throttle: 200 },
+)
 </script>
 
 <template>

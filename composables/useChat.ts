@@ -20,7 +20,7 @@ export default function () {
   })
 
   const apiKey = computed(() => {
-    return settings.value?.apiKey
+    return debugApiMode.value ? Date.now() : settings.value?.apiKey
   })
 
   const chatMessages = useStorage(`${activeChat.value?.id}-messages`, [], localStorage)
@@ -31,8 +31,8 @@ export default function () {
   async function send() {
     const _chat = activeChat.value
     const _settings = unref({ ...settings.value })
-    const _apiKey = _settings.apiKey
     delete _settings.apiKey
+    const _apiKey = `${apiKey.value}`
 
     if (!_chat || !_settings || !_apiKey || sending.value || !input.value)
       return

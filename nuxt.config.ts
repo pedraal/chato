@@ -6,14 +6,35 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxt/ui',
     '@nuxtjs/mdc',
-    '@nuxt/content',
   ],
-  content: {
+  mdc: {
     highlight: {
       theme: 'catppuccin-mocha',
+      preload: [
+        'json',
+        'yaml',
+        'toml',
+        'jsx',
+        'tsx',
+        'ruby',
+        'python',
+        'java',
+        'php',
+        'shell',
+        'bash',
+        'sql',
+        'graphql',
+        'markdown',
+      ],
     },
-    markdown: {
-      mdc: false,
+    remarkPlugins: {
+      'remark-mdc': {
+        options: {
+          experimental: {
+            autoUnwrap: true,
+          },
+        },
+      },
     },
   },
   runtimeConfig: {},
