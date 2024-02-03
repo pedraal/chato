@@ -33,10 +33,13 @@ export default function () {
     return getChat(route.params.chatId as string)
   })
 
+  const mostRecentChatId = computed(() => {
+    return sortedChats.value[0]?.id
+  })
+
   function getChat(id: string) {
     return chats.value.find(chat => chat.id === id)
   }
-
 
   function newChat() {
     const chat = {
@@ -64,6 +67,7 @@ export default function () {
     models,
     chats,
     sortedChats,
+    mostRecentChatId,
     newChat,
     getChat,
     activeChat,

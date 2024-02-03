@@ -48,10 +48,7 @@ onMounted(() => {
     </div>
     <div class="p-2 flex gap-2">
       <UTextarea v-model="input" class="w-full" autofocus :disabled="!apiKey || sending" :placeholder="!apiKey ? 'Open settings to add your API keys' : 'Ask something'" :ui="{ padding: { sm: 'pr-12' } }" @keydown.enter.exact.prevent="send" />
-      <div class="flex flex-col gap-2">
-        <Microphone />
-        <UButton icon="i-heroicons-paper-airplane" @click="send" />
-      </div>
+      <UButton icon="i-heroicons-paper-airplane" @click="send" />
     </div>
   </div>
 </template>
