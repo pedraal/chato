@@ -1,11 +1,11 @@
-export function useDebugStream(params: Record<string, any>) {
+export function useDemoStream(params: Record<string, any>) {
   const event = useEvent()
   setResponseHeader(event, 'Content-Type', 'text/html')
   const encoder = new TextEncoder()
 
   const stream = new ReadableStream({
     async start(controller) {
-      for (const token of debugMarkdown(params)) {
+      for (const token of demoMarkdown(params)) {
         controller.enqueue(encoder.encode(token))
         await new Promise((resolve) => {
           setTimeout(resolve, 50)
@@ -16,30 +16,41 @@ export function useDebugStream(params: Record<string, any>) {
   return stream
 }
 
-function debugMarkdown(params: Record<string, any>) {
+function demoMarkdown(params: Record<string, any>) {
   delete params.messages
 
   const message = `
-  ## Debug mode enabled
-  This is a debug message to test out what would look like if the LLM was returning a markdown response.
+  ## Demo mode enabled
+  This is a demo message to test out what would look like if the LLM was returning a markdown response.
+
+  Go to the app settings to disable demo mode and add your API keys for the different supported LLM APIs.
 
   Your request parameters are:
   \`\`\`json
   ${JSON.stringify(params, null, 2)}
   \`\`\`
 
-  Some debug typescript code:
+  Some demo typescript code:
   \`\`\`typescript
-  import { foo } from 'bar'
+  class Person {
+    name: string;
+    age: number;
 
-  const baz = foo()
+    constructor(name: string, age: number) {
+      this.name = name;
+      this.age = age;
+    }
 
-  async function foobarbaz() {
-    return await baz
+    greet() {
+      console.log(\`Hello, I'm \${this.name} and I'm \${ this.age } years old.\`);
+    }
   }
+
+  const person = new Person("John Doe", 30);
+  person.greet();
   \`\`\`
 
-  Some debug html code:
+  Some demo html code:
   \`\`\`html
   <!DOCTYPE html>
   <html lang="en">
@@ -71,7 +82,7 @@ function debugMarkdown(params: Record<string, any>) {
   </html>
   \`\`\`
 
-  Some debug tsx code:
+  Some demo tsx code:
   \`\`\`tsx
   import React from 'react';
 

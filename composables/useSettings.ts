@@ -5,7 +5,7 @@ export default function () {
 
   const openModal = useState('open-settings-modal', () => false)
 
-  const debugApiMode = useStorage('debugApiMode', false)
+  const demoMode = useStorage('demoMode', false)
 
   const openAiSettings = useStorage<{ apiKey: string, maxTokens: number, temperature: number, seed?: number }>('openAiSettings', {
     apiKey: '',
@@ -26,6 +26,6 @@ export default function () {
     openModal,
     openAiSettings,
     mistralAiSettings,
-    debugApiMode,
+    demoMode,
   }
 }

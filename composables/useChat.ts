@@ -7,7 +7,7 @@ export interface Message {
 }
 
 export default function () {
-  const { openAiSettings, mistralAiSettings, debugApiMode } = useSettings()
+  const { openAiSettings, mistralAiSettings, demoMode } = useSettings()
   const { activeChat } = useChats()
 
   const settings = computed(() => {
@@ -20,7 +20,7 @@ export default function () {
   })
 
   const apiKey = computed(() => {
-    return debugApiMode.value ? Date.now() : settings.value?.apiKey
+    return demoMode.value ? Date.now() : settings.value?.apiKey
   })
 
   const chatMessages = useStorage(`${activeChat.value?.id}-messages`, [], localStorage)
@@ -48,7 +48,7 @@ export default function () {
     const decoder = new TextDecoder()
     fetch(`/api/${_chat.model.api}`, {
       method: 'POST',
-      body: JSON.stringify({ ..._settings, messages: chatMessages.value, model: _chat.model.id, debug: debugApiMode.value }),
+      body: JSON.stringify({ ..._settings, messages: chatMessages.value, model: _chat.model.id, demo: demoMode.value }),
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': _apiKey,

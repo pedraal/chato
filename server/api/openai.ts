@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   if (!apiKey)
     throw new Error('Missing OpenAI API key')
 
-  const body = await readBody<{ messages: ChatCompletionMessageParam[], model: string, maxTokens: number, temperature: number, seed?: number, debug?: boolean }>(event)
+  const body = await readBody<{ messages: ChatCompletionMessageParam[], model: string, maxTokens: number, temperature: number, seed?: number, demo?: boolean }>(event)
 
   const chatParams = {
     model: body.model,
@@ -18,8 +18,8 @@ export default defineEventHandler(async (event) => {
     seed: body.seed,
   }
 
-  if (body.debug) {
-    return useDebugStream(chatParams)
+  if (body.demo) {
+    return useDemoStream(chatParams)
   }
   else {
     const openai = new OpenAI({ apiKey })

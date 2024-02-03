@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { openModal, openAiSettings, mistralAiSettings, debugApiMode } = useSettings()
+const { openModal, openAiSettings, mistralAiSettings, demoMode } = useSettings()
 const colorMode = useColorMode()
 const colorOptions = [
   { value: 'system', label: 'System' },
@@ -14,8 +14,6 @@ const items = [
 ]
 
 const selected = ref(0)
-
-const isDev = import.meta.dev
 
 watch(openModal, (v) => {
   if (v)
@@ -36,10 +34,10 @@ watch(openModal, (v) => {
               <ColorPicker />
             </div>
           </UFormGroup>
-          <UFormGroup label="Demo Mode" name="debugMode">
+          <UFormGroup label="Demo Mode" name="demoMode">
             <div class="flex items-center gap-2">
-              <UToggle v-model="debugApiMode" />
-              <span class="text-sm" :class="{ 'text-gray-400 dark:text-gray-500': !debugApiMode }">Replace third-party API calls by a mocked stream.</span>
+              <UToggle v-model="demoMode" />
+              <span class="text-sm" :class="{ 'text-gray-400 dark:text-gray-500': !demoMode }">Replace third-party API calls by a mocked stream.</span>
             </div>
           </UFormGroup>
         </template>

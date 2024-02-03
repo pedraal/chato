@@ -1,12 +1,11 @@
 import MistralClient from '@mistralai/mistralai'
-import { useDebugStream } from '../utils/useDebugStream'
 
 export default defineEventHandler(async (event) => {
   const apiKey = getRequestHeader(event, 'x-api-key')
   if (!apiKey)
     throw new Error('Missing Mistral API key')
 
-  const body = await readBody<{ messages: Array<{ role: string, content: string }>, model: string, maxTokens: number, temperature: number, seed?: number, debug?: boolean }>(event)
+  const body = await readBody<{ messages: Array<{ role: string, content: string }>, model: string, maxTokens: number, temperature: number, seed?: number, demo?: boolean }>(event)
 
   const chatParams = {
     model: body.model,
@@ -16,8 +15,8 @@ export default defineEventHandler(async (event) => {
     randomSeed: body.seed,
   }
 
-  if (body.debug) {
-    return useDebugStream(chatParams)
+  if (body.demo) {
+    return useDemoStream(chatParams)
   }
   else {
     const mistral = new MistralClient(apiKey)
