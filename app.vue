@@ -24,5 +24,6 @@ onMounted(() => {
     <main class="w-full md:w-[calc(100%-16rem)]">
       <NuxtPage />
     </main>
+    <UNotifications />
   </div>
 </template>

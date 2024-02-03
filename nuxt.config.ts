@@ -27,6 +27,9 @@ export default defineNuxtConfig({
         'markdown',
       ],
     },
+    headings: {
+      anchorLinks: false,
+    },
     remarkPlugins: {
       'remark-mdc': {
         options: {

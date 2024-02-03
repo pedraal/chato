@@ -28,7 +28,9 @@ watchThrottled(
           Delete
         </a>
       </p>
-      <MDCRenderer v-if="data" :body="data.body" :data="data.data" class="prose dark:prose-invert max-w-2xl" />
+      <div class="prose dark:prose-invert [&_*:first-child]:mt-0 [&_*:last-child]:mb-0">
+        <MDCRenderer v-if="data" :body="data.body" :data="data.data" class="max-w-3xl" />
+      </div>
     </div>
   </div>
 </template>

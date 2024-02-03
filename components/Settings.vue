@@ -36,10 +36,10 @@ watch(openModal, (v) => {
               <ColorPicker />
             </div>
           </UFormGroup>
-          <UFormGroup v-if="isDev" label="Debug Mode" name="debugMode">
+          <UFormGroup label="Demo Mode" name="debugMode">
             <div class="flex items-center gap-2">
               <UToggle v-model="debugApiMode" />
-              <span class="text-sm" :class="{ 'text-gray-400 dark:text-gray-500': !debugApiMode }">Replace third-party API responses by a mocked stream. <br>Use this as a demo but you shouldn't need to use it otherwise</span>
+              <span class="text-sm" :class="{ 'text-gray-400 dark:text-gray-500': !debugApiMode }">Replace third-party API calls by a mocked stream.</span>
             </div>
           </UFormGroup>
         </template>
