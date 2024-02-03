@@ -12,7 +12,7 @@ const { data, refresh } = await useAsyncData(props.message.id, () => parseMarkdo
 watchThrottled(
   () => props.message.content,
   () => { refresh() },
-  { throttle: 200 },
+  { throttle: 100 },
 )
 </script>
 
