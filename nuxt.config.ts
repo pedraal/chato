@@ -5,12 +5,19 @@ export default defineNuxtConfig({
   modules: [
     '@vueuse/nuxt',
     '@nuxt/ui',
-    '@nuxt/content',
     '@nuxtjs/mdc',
+    '@nuxt/content',
   ],
   content: {
     highlight: {
       theme: 'catppuccin-mocha',
     },
+    markdown: {
+      mdc: false,
+    },
+  },
+  runtimeConfig: {},
+  nitro: {
+    experimental: { asyncContext: true },
   },
 })

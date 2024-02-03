@@ -1,29 +1,39 @@
 import MistralClient from '@mistralai/mistralai'
+import { useDebugStream } from '../utils/useDebugStream'
 
 export default defineEventHandler(async (event) => {
   const apiKey = getRequestHeader(event, 'x-api-key')
   if (!apiKey)
     throw new Error('Missing Mistral API key')
-  const mistral = new MistralClient(apiKey)
 
-  const body = await readBody<{ messages: Array<{ role: string, content: string }>, model: string, maxTokens: number }>(event)
+  const body = await readBody<{ messages: Array<{ role: string, content: string }>, model: string, maxTokens: number, temperature: number, seed?: number, debug?: boolean }>(event)
 
-  const stream = await mistral.chatStream({
+  const chatParams = {
     model: body.model,
     messages: body.messages,
-    temperature: 0.1,
-  })
+    maxTokens: body.maxTokens || 100,
+    temperature: body.temperature || 0.7,
+    randomSeed: body.seed,
+  }
 
-  const encoder = new TextEncoder()
-  const responseStream = new ReadableStream({
-    async start(controller) {
-      for await (const chunk of stream) {
-        if (chunk.choices[0].delta.content) {
-          const streamText = chunk.choices[0].delta.content
-          controller.enqueue(encoder.encode(streamText))
+  if (body.debug) {
+    return useDebugStream(chatParams)
+  }
+  else {
+    const mistral = new MistralClient(apiKey)
+    const stream = await mistral.chatStream(chatParams)
+
+    const encoder = new TextEncoder()
+    const responseStream = new ReadableStream({
+      async start(controller) {
+        for await (const chunk of stream) {
+          if (chunk.choices[0].delta.content) {
+            const streamText = chunk.choices[0].delta.content
+            controller.enqueue(encoder.encode(streamText))
+          }
         }
-      }
-    },
-  })
-  return responseStream
+      },
+    })
+    return responseStream
+  }
 })

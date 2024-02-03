@@ -1,15 +1,31 @@
+import { useStorage } from '@vueuse/core'
+
 export default function () {
-  const openModal = useState('open-settings-modal', () => false)
-  const openAiApiKey = useLocalStorage<string>('openAiApiKey', '')
-  const mistralApiKey = useLocalStorage<string>('mistralApiKey', '')
-  const maxTokens = useLocalStorage<number>('maxTokens', 100)
   const showNav = useState('show-nav', () => false)
 
+  const openModal = useState('open-settings-modal', () => false)
+
+  const debugApiMode = useStorage('debugApiMode', false)
+
+  const openAiSettings = useStorage<{ apiKey: string, maxTokens: number, temperature: number, seed?: number }>('openAiSettings', {
+    apiKey: '',
+    maxTokens: 100,
+    temperature: 0.7,
+    seed: undefined,
+  })
+
+  const mistralAiSettings = useStorage<{ apiKey: string, maxTokens: number, temperature: number, seed?: number }>('mistralAiSettings', {
+    apiKey: '',
+    maxTokens: 100,
+    temperature: 0.7,
+    seed: undefined,
+  })
+
   return {
-    openModal,
-    openAiApiKey,
-    mistralApiKey,
-    maxTokens,
     showNav,
+    openModal,
+    openAiSettings,
+    mistralAiSettings,
+    debugApiMode,
   }
 }

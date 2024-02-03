@@ -2,7 +2,7 @@
 const { showNav } = useSettings()
 const { models, activeChat } = useChats()
 
-const { apiKey, input, send, sending, aiWriting, deleteMessage } = useChat()
+const { apiKey, input, send, sending, aiWriting, chatMessages } = useChat()
 
 const showNameInput = ref(false)
 const nameInput = ref<HTMLInputElement | null>(null)
@@ -41,23 +41,14 @@ onMounted(() => {
       </div>
     </div>
     <div ref="messagesContainer" class="grow p-4 overflow-y-auto">
-      <div v-for="(message, idx) in activeChat.messages" :key="idx" class="flex gap-4 group mb-6">
-        <div class="max-md:hidden">
-          <UAvatar :icon="message.role === 'user' ? 'i-heroicons-user' : 'i-heroicons-cpu-chip'" size="sm" :ui="{ icon: { base: 'text-primary dark:text-primary' } }" />
-        </div>
-        <div>
-          <p class="font-bold mb-1.5 mt-1">
-            {{ message.role === 'user' ? 'Me' : 'Assistant' }}
-            <a class="text-sm text-gray-500 hidden group-hover:inline cursor-pointer ml-2" @click="deleteMessage(idx)">
-              Delete
-            </a>
-          </p>
-          <MDC class="prose dark:prose-invert max-w-2xl" :value="message.content" />
-        </div>
-      </div>
+      <ChatMessage v-for="message in chatMessages" :key="message.id" :message="message" />
     </div>
-    <div class="p-2">
-      <UTextarea v-model="input" class="w-full" autofocus :disabled="!apiKey || sending" :placeholder="!apiKey ? 'Open settings to add your API keys' : 'Ask something'" @keydown.enter.exact.prevent="send" />
+    <div class="p-2 flex gap-2">
+      <UTextarea v-model="input" class="w-full" autofocus :disabled="!apiKey || sending" :placeholder="!apiKey ? 'Open settings to add your API keys' : 'Ask something'" :ui="{ padding: { sm: 'pr-12' } }" @keydown.enter.exact.prevent="send" />
+      <div class="flex flex-col gap-2">
+        <Microphone />
+        <UButton icon="i-heroicons-paper-airplane" @click="send" />
+      </div>
     </div>
   </div>
 </template>

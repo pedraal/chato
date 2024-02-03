@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { openModal, openAiApiKey, mistralApiKey, maxTokens } = useSettings()
+const { openModal, openAiSettings, mistralAiSettings, debugApiMode } = useSettings()
 const colorMode = useColorMode()
 const colorOptions = [
   { value: 'system', label: 'System' },
@@ -7,34 +7,95 @@ const colorOptions = [
   { value: 'dark', label: 'Dark' },
 ]
 
-const openAiInputType = ref<'text' | 'password'>('password')
-const mistralInputType = ref<'text' | 'password'>('password')
+const items = [
+  { label: 'General' },
+  { label: 'OpenAI' },
+  { label: 'MistralAI' },
+]
+
+const selected = ref(0)
+
+const isDev = import.meta.dev
+
+watch(openModal, (v) => {
+  if (v)
+    selected.value = 0
+})
 </script>
 
 <template>
   <UModal v-model="openModal">
     <div class="p-4">
+      <UTabs v-model="selected" :items="items" />
+
       <form class="flex flex-col gap-4" @submit.prevent="openModal = false">
-        <UFormGroup label="MistralAI API Key" name="mistralApiKey">
-          <UInput v-model="mistralApiKey" :type="mistralInputType" />
-          <UButton icon="i-heroicons-eye" variant="link" color="gray" class="absolute right-2 top-0" @click="mistralInputType = mistralInputType === 'password' ? 'text' : 'password'" />
-        </UFormGroup>
-        <UFormGroup label="OpenAI API Key" name="openAiApiKey">
-          <UInput v-model="openAiApiKey" :type="openAiInputType" />
-          <UButton icon="i-heroicons-eye" variant="link" color="gray" class="absolute right-2 top-0" @click="openAiInputType = openAiInputType === 'password' ? 'text' : 'password'" />
-        </UFormGroup>
-        <UFormGroup label="GPT Max Tokens" name="maxTokens">
-          <UInput v-model="maxTokens" type="number" />
-        </UFormGroup>
-        <UFormGroup label="Theme" name="theme">
-          <div class="flex gap-2">
-            <USelectMenu v-model="colorMode.preference" :options="colorOptions" value-attribute="value" option-attribute="label" class="grow" />
-            <ColorPicker />
-          </div>
-        </UFormGroup>
+        <template v-if="selected === 0">
+          <UFormGroup label="Theme" name="theme">
+            <div class="flex gap-2">
+              <USelectMenu v-model="colorMode.preference" :options="colorOptions" value-attribute="value" option-attribute="label" class="grow" />
+              <ColorPicker />
+            </div>
+          </UFormGroup>
+          <UFormGroup v-if="isDev" label="Debug Mode" name="debugMode">
+            <div class="flex items-center gap-2">
+              <UToggle v-model="debugApiMode" />
+              <span class="text-sm" :class="{ 'text-gray-400 dark:text-gray-500': !debugApiMode }">Replace third-party API calls by a stream of the sent params</span>
+            </div>
+          </UFormGroup>
+        </template>
+        <template v-else-if="selected === 1">
+          <UFormGroup label="API Key" name="openAiApiKey">
+            <SettingsApiKeyInput v-model="openAiSettings.apiKey" />
+          </UFormGroup>
+          <!-- <p class="text-center text-gray-400 dark:text-gray-500">
+            These are your general settings for this API. You can customize them on a per chat basis.
+          </p> -->
+          <UFormGroup label="Chat temperature" name="openAiApiKey">
+            <div class="flex items-center gap-2">
+              <URange v-model="openAiSettings.temperature" :min="0" :max="1" :step="0.1" />
+              <UBadge class="w-9 justify-center">
+                {{ openAiSettings.temperature }}
+              </UBadge>
+            </div>
+          </UFormGroup>
+          <UFormGroup label="Chat max tokens" name="openAiApiKey">
+            <UInput v-model="openAiSettings.maxTokens" type="number" />
+          </UFormGroup>
+          <UFormGroup label="Chat determinism seed" name="openAiApiKey">
+            <SettingsLockedRandomNumberInput v-model="openAiSettings.seed" />
+            <p class="text-xs text-gray-400 dark:text-gray-500">
+              Leave empty to disable determinism.
+            </p>
+          </UFormGroup>
+        </template>
+        <template v-else-if="selected === 2">
+          <UFormGroup label="API Key" name="mistralAiApiKey">
+            <SettingsApiKeyInput v-model="mistralAiSettings.apiKey" />
+          </UFormGroup>
+          <!-- <p class="text-center text-gray-400 dark:text-gray-500">
+            These are your general settings for this API. You can customize them on a per chat basis.
+          </p> -->
+          <UFormGroup label="Chat temperature" name="mistralAiApiKey">
+            <div class="flex items-center gap-2">
+              <URange v-model="mistralAiSettings.temperature" :min="0" :max="1" :step="0.1" />
+              <UBadge class="w-9 justify-center">
+                {{ mistralAiSettings.temperature }}
+              </UBadge>
+            </div>
+          </UFormGroup>
+          <UFormGroup label="Chat max tokens" name="mistralAiApiKey">
+            <UInput v-model="mistralAiSettings.maxTokens" type="number" />
+          </UFormGroup>
+          <UFormGroup label="Chat determinism seed" name="openAiApiKey">
+            <SettingsLockedRandomNumberInput v-model="mistralAiSettings.seed" />
+            <p class="text-xs text-gray-400 dark:text-gray-500">
+              Leave empty to disable determinism.
+            </p>
+          </UFormGroup>
+        </template>
         <div class="text-right">
-          <UButton type="submit">
-            Save
+          <UButton type="submit" color="gray">
+            Close
           </UButton>
         </div>
       </form>
