@@ -1,23 +1,21 @@
+import { useStorage } from '@vueuse/core'
+
 interface Model {
   id: string
   label: string
   api: string
 }
 
-interface Message {
-  role: 'system' | 'user' | 'assistant'
-  content: string
-}
-
 interface Chat {
   id: string
   name: string
   model: Model
-  messages: Message[]
   lastMessageAt: Date
 }
 
 export default function () {
+  const route = useRoute()
+
   const models: Model[] = [
     { id: 'mistral-tiny', label: 'Mistral Tiny', api: 'mistralai' },
     { id: 'mistral-small', label: 'Mistral Small', api: 'mistralai' },
@@ -27,17 +25,18 @@ export default function () {
     { id: 'gpt-4-1106-preview', label: 'GPT-4 Turbo', api: 'openai' },
   ]
 
-  const chats = useLocalStorage<Chat[]>('chats', [])
+  const chats = useStorage<Chat[]>('chats', [], localStorage)
+
   const sortedChats = computed(() => chats.value.sort((a, b) => new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime()))
+
+  const activeChat = computed(() => {
+    return getChat(route.params.chatId as string)
+  })
 
   function getChat(id: string) {
     return chats.value.find(chat => chat.id === id)
   }
 
-  const route = useRoute()
-  const activeChat = computed(() => {
-    return getChat(route.params.chatId as string)
-  })
 
   function newChat() {
     const chat = {
@@ -52,6 +51,15 @@ export default function () {
     navigateTo(`/chats/${chat.id}`)
   }
 
+  function removeChat(id: string) {
+    const index = chats.value.findIndex(chat => chat.id === id)
+    if (index !== -1)
+      chats.value.splice(index, 1)
+
+    if (route.params.chatId === id)
+      navigateTo('/')
+  }
+
   return {
     models,
     chats,
@@ -59,5 +67,6 @@ export default function () {
     newChat,
     getChat,
     activeChat,
+    removeChat,
   }
 }

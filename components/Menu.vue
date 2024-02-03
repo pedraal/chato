@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { openModal: openSettings, showNav } = useSettings()
-const { newChat, sortedChats, chats } = useChats()
+const { newChat, sortedChats, removeChat } = useChats()
 </script>
 
 <template>
@@ -22,7 +22,7 @@ const { newChat, sortedChats, chats } = useChats()
       <UIcon name="i-heroicons-chat-bubble-bottom-center" class="shrink-0" />
       <span class="truncate grow">{{ chat.name }}</span>
       <div class="invisible group-hover:visible">
-        <UButton icon="i-heroicons-trash" color="red" variant="ghost" @click.prevent="chats = chats.filter(c => c.id !== chat.id)" />
+        <UButton icon="i-heroicons-trash" color="red" variant="ghost" @click.prevent="removeChat(chat.id)" />
       </div>
     </NuxtLink>
   </div>
