@@ -19,6 +19,8 @@ watch(openModal, (v) => {
   if (v)
     selected.value = 0
 })
+
+const apiKeyDisclaimer = 'Your API key will be exclusively saved in your browser storage. Hovewer it is sent to this app server to make calls to LLMs API. It won\'t be logged anywhere neither.'
 </script>
 
 <template>
@@ -44,6 +46,7 @@ watch(openModal, (v) => {
         <template v-else-if="selected === 1">
           <UFormGroup label="API Key" name="openAiApiKey">
             <SettingsApiKeyInput v-model="openAiSettings.apiKey" />
+            <span class="text-sm text-gray-400 dark:text-gray-500">{{ apiKeyDisclaimer }}</span>
           </UFormGroup>
           <UFormGroup label="Chat temperature" name="openAiApiKey">
             <div class="flex items-center gap-2">
@@ -66,6 +69,7 @@ watch(openModal, (v) => {
         <template v-else-if="selected === 2">
           <UFormGroup label="API Key" name="mistralAiApiKey">
             <SettingsApiKeyInput v-model="mistralAiSettings.apiKey" />
+            <span class="text-sm text-gray-400 dark:text-gray-500">{{ apiKeyDisclaimer }}</span>
           </UFormGroup>
           <UFormGroup label="Chat temperature" name="mistralAiApiKey">
             <div class="flex items-center gap-2">

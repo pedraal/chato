@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { showNav } = useSettings()
-const { sortedChats } = useChats()
+const { mostRecentChatId } = useChats()
 
 useHead({
   title: 'Chato AI',
@@ -10,8 +10,8 @@ useHead({
 })
 
 onMounted(() => {
-  if (sortedChats.value.length)
-    navigateTo(`/chats/${sortedChats.value[0].id}`)
+  if (mostRecentChatId.value)
+    navigateTo(`/chats/${mostRecentChatId.value}`)
 })
 </script>
 

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 const { openModal: openSettings, showNav } = useSettings()
-const { newChat, sortedChats, removeChat } = useChats()
+const { sortedChats, mostRecentChatId, newChat, removeChat } = useChats()
 </script>
 
 <template>
   <div class="flex justify-between">
-    <NuxtLink to="/" class="text-primary font-bold flex items-center gap-2">
+    <NuxtLink :to="mostRecentChatId ? `/chats/${mostRecentChatId}` : '/'" class="text-primary font-bold flex items-center gap-2">
       <UIcon name="i-game-icons-castle" class="shrink-0 scale-150 ml-2" dynamic />
       Chato AI
     </NuxtLink>
