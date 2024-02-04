@@ -11,6 +11,7 @@ export function useDemoStream(params: Record<string, any>) {
           setTimeout(resolve, 50)
         })
       }
+      controller.close()
     },
   })
   return stream

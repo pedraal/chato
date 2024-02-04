@@ -31,6 +31,7 @@ export default defineEventHandler(async (event) => {
             controller.enqueue(encoder.encode(streamText))
           }
         }
+        controller.close()
       },
     })
     return responseStream

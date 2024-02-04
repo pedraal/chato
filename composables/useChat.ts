@@ -54,7 +54,7 @@ export default function () {
         'x-api-key': _apiKey,
       },
     })
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok || response.body == null)
           throw new Error('Network response was not ok')
 
@@ -80,7 +80,7 @@ export default function () {
 
           return await read()
         }
-        return read()
+        return await read()
       })
       .catch((error) => {
         console.error(error)
