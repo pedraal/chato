@@ -45,10 +45,12 @@ export default function () {
     input.value = ''
     _chat.lastMessageAt = new Date()
 
+    const messages = chatMessages.value.map(m => ({ role: m.role, content: m.content }))
+
     const decoder = new TextDecoder()
     fetch(`/api/${_chat.model.api}`, {
       method: 'POST',
-      body: JSON.stringify({ ..._settings, messages: chatMessages.value, model: _chat.model.id, demo: demoMode.value }),
+      body: JSON.stringify({ ..._settings, messages, model: _chat.model.id, demo: demoMode.value }),
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': _apiKey,
@@ -84,7 +86,7 @@ export default function () {
       })
       .catch((error) => {
         console.error(error)
-        chatMessages.value.pop()
+        useToast().add({ title: 'Oops', description: 'An error occurred while sending the message.', color: 'red', icon: 'i-heroicons-exclamation-triangle' })
       }).finally(() => {
         sending.value = false
       })
