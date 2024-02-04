@@ -7,6 +7,10 @@ useHead({
   meta: [
     { name: 'description', content: 'A web application to interact with various LLMs through their APIs' },
   ],
+  link: [
+    { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', media: '(prefers-color-scheme: light)' },
+    { rel: 'icon', type: 'image/x-icon', href: '/favicon-dark.ico', media: '(prefers-color-scheme: dark)' },
+  ],
 })
 
 onMounted(() => {
