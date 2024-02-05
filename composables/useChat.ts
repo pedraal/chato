@@ -1,11 +1,3 @@
-import { useStorage } from '@vueuse/core'
-
-export interface Message {
-  id: string
-  role: 'system' | 'user' | 'assistant'
-  content: string
-}
-
 export default function () {
   const { openAiSettings, mistralAiSettings, demoMode } = useSettings()
   const { activeChat } = useChats()
@@ -23,8 +15,6 @@ export default function () {
     return demoMode.value ? Date.now() : settings.value?.apiKey
   })
 
-  const chatMessages = useStorage(`${activeChat.value?.id}-messages`, [], localStorage)
-
   const input = ref('')
   const sending = ref(false)
   const aiWriting = createEventHook()
@@ -37,7 +27,7 @@ export default function () {
     if (!_chat || !_settings || !_apiKey || sending.value || !input.value)
       return
 
-    chatMessages.value.push({
+    _chat.messages.push({
       id: Date.now().toString(),
       role: 'user',
       content: input.value,
@@ -45,7 +35,7 @@ export default function () {
     input.value = ''
     _chat.lastMessageAt = new Date()
 
-    const messages = chatMessages.value.map(m => ({ role: m.role, content: m.content }))
+    const messages = _chat.messages.map(m => ({ role: m.role, content: m.content }))
 
     const decoder = new TextDecoder()
     fetch(`/api/${_chat.model.api}`, {
@@ -62,14 +52,14 @@ export default function () {
 
         const id = Date.now().toString()
         _chat.lastMessageAt = new Date()
-        chatMessages.value.push({
+        _chat.messages.push({
           id,
           role: 'assistant',
           content: '',
         })
 
         const reader = response.body.getReader()
-        const lastMessage = chatMessages.value.find(message => message.id === id)
+        const lastMessage = _chat.messages.find(message => message.id === id)
 
         async function read(): Promise<void> {
           const { done, value } = await reader.read()
@@ -97,8 +87,8 @@ export default function () {
     if (!chat)
       return
 
-    const index = chatMessages.value.findIndex(message => message.id === id)
-    chatMessages.value.splice(index, 1)
+    const index = chat.messages.findIndex(message => message.id === id)
+    chat.messages.splice(index, 1)
   }
 
   return {
@@ -107,7 +97,6 @@ export default function () {
     sending,
     send,
     aiWriting,
-    chatMessages,
     deleteMessage,
   }
 }

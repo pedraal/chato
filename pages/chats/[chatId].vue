@@ -2,7 +2,7 @@
 const { showNav } = useSettings()
 const { models, activeChat } = useChats()
 
-const { apiKey, input, send, sending, aiWriting, chatMessages } = useChat()
+const { apiKey, input, send, sending, aiWriting } = useChat()
 
 const showNameInput = ref(false)
 const nameInput = ref<HTMLInputElement | null>(null)
@@ -44,7 +44,7 @@ onMounted(() => {
       </div>
     </div>
     <div ref="messagesContainer" class="grow p-4 overflow-y-auto">
-      <ChatMessage v-for="message in chatMessages" :key="message.id" :message="message" />
+      <ChatMessage v-for="message in activeChat.messages" :key="message.id" :message="message" />
     </div>
     <div class="p-2 flex gap-2">
       <UTextarea v-model="input" class="w-full" autofocus :disabled="!apiKey || sending" :placeholder="!apiKey ? 'Open settings to add your API keys' : 'Ask something'" :ui="{ padding: { sm: 'pr-12' } }" @keydown.enter.exact.prevent="send" />

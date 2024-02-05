@@ -1,9 +1,13 @@
-import { useStorage } from '@vueuse/core'
-
 interface Model {
   id: string
   label: string
   api: string
+}
+
+export interface Message {
+  id: string
+  role: 'system' | 'user' | 'assistant'
+  content: string
 }
 
 interface Chat {
@@ -11,6 +15,7 @@ interface Chat {
   name: string
   model: Model
   lastMessageAt: Date
+  messages: Message[]
 }
 
 export default function () {
@@ -20,12 +25,12 @@ export default function () {
     { id: 'mistral-tiny', label: 'Mistral Tiny', api: 'mistralai' },
     { id: 'mistral-small', label: 'Mistral Small', api: 'mistralai' },
     { id: 'mistral-medium', label: 'Mistral Medium', api: 'mistralai' },
-    { id: 'gpt-3.5-turbo-1106', label: 'GPT-3.5 Turbo', api: 'openai' },
-    { id: 'gpt-4', label: 'GPT-4', api: 'openai' },
-    { id: 'gpt-4-1106-preview', label: 'GPT-4 Turbo', api: 'openai' },
+    { id: 'gpt-3.5-turbo-0125', label: 'GPT-3.5 Turbo', api: 'openai' },
+    { id: 'gpt-4-1106-preview', label: 'GPT-4', api: 'openai' },
+    { id: 'gpt-4-0125-preview', label: 'GPT-4 Turbo', api: 'openai' },
   ]
 
-  const chats = useStorage<Chat[]>('chats', [], localStorage)
+  const chats = useLocalStorage<Chat[]>('chats', [])
 
   const sortedChats = computed(() => chats.value.sort((a, b) => new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime()))
 

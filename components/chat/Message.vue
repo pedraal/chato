@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { parseMarkdown } from '@nuxtjs/mdc/dist/runtime'
-import type { Message } from '~/composables/useChat'
+import type { Message } from '~/composables/useChats'
 
 const props = defineProps<{
   message: Message

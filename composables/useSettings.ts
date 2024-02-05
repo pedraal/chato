@@ -5,16 +5,16 @@ export default function () {
 
   const openModal = useState('open-settings-modal', () => false)
 
-  const demoMode = useStorage('demoMode', false)
+  const demoMode = useLocalStorage('demoMode', false)
 
-  const openAiSettings = useStorage<{ apiKey: string, maxTokens: number, temperature: number, seed?: number }>('openAiSettings', {
+  const openAiSettings = useLocalStorage<{ apiKey: string, maxTokens: number, temperature: number, seed?: number }>('openAiSettings', {
     apiKey: '',
     maxTokens: 100,
     temperature: 0.7,
     seed: undefined,
   })
 
-  const mistralAiSettings = useStorage<{ apiKey: string, maxTokens: number, temperature: number, seed?: number }>('mistralAiSettings', {
+  const mistralAiSettings = useLocalStorage<{ apiKey: string, maxTokens: number, temperature: number, seed?: number }>('mistralAiSettings', {
     apiKey: '',
     maxTokens: 100,
     temperature: 0.7,
