@@ -5,6 +5,7 @@ const items = [
   { label: 'General' },
   { label: 'OpenAI' },
   { label: 'MistralAI' },
+  { label: 'Audio' },
 ]
 
 const selected = ref(0)
@@ -22,13 +23,16 @@ watch(openModal, (v) => {
 
       <form class="flex flex-col gap-4" @submit.prevent="openModal = false">
         <template v-if="selected === 0">
-          <SettingsGlobalForm />
+          <SettingsGeneralForm />
         </template>
         <template v-else-if="selected === 1">
           <SettingsOpenAiForm />
         </template>
         <template v-else-if="selected === 2">
           <SettingsMistralAiForm />
+        </template>
+        <template v-else-if="selected === 3">
+          <SettingsAudioForm />
         </template>
         <div class="text-right">
           <UButton type="submit" color="gray">

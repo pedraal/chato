@@ -1,13 +1,11 @@
 <script lang="ts" setup>
-import { apiKeyDisclaimer } from '~/data/constants'
-
 const { openAiSettings } = useSettings()
 </script>
 
 <template>
   <UFormGroup label="API Key" name="openAiApiKey">
     <SettingsApiKeyInput v-model="openAiSettings.apiKey" />
-    <span class="text-sm text-gray-400 dark:text-gray-500">{{ apiKeyDisclaimer }}</span>
+    <span class="text-sm text-gray-400 dark:text-gray-500">{{ API_KEY_DISCLAIMER }}</span>
   </UFormGroup>
   <UFormGroup label="Chat temperature" name="openAiApiKey">
     <div class="flex items-center gap-2">

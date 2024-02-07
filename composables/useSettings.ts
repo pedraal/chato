@@ -1,5 +1,3 @@
-import { useStorage } from '@vueuse/core'
-
 export default function () {
   const showNav = useState('show-nav', () => false)
 
@@ -21,11 +19,20 @@ export default function () {
     seed: undefined,
   })
 
+  const transcriberSettings = useLocalStorage<{ microphoneId: string, model: string, language: string, quantized: boolean, subtask: string }>('transcribeSettings', {
+    microphoneId: '',
+    model: Object.keys(TRANSCRIBER_MODELS)[0],
+    language: 'en',
+    quantized: true,
+    subtask: 'transcribe',
+  })
+
   return {
     showNav,
     openModal,
     openAiSettings,
     mistralAiSettings,
     demoMode,
+    transcriberSettings,
   }
 }

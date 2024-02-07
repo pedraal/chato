@@ -1,1 +1,0 @@
-export const apiKeyDisclaimer = 'Your API key will be exclusively saved in your browser storage. Hovewer it is sent to this app server to make calls to LLMs API. It won\'t be logged anywhere neither.'

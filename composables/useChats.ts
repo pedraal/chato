@@ -22,12 +22,8 @@ export default function () {
   const route = useRoute()
 
   const models: Model[] = [
-    { id: 'mistral-tiny', label: 'Mistral Tiny', api: 'mistralai' },
-    { id: 'mistral-small', label: 'Mistral Small', api: 'mistralai' },
-    { id: 'mistral-medium', label: 'Mistral Medium', api: 'mistralai' },
-    { id: 'gpt-3.5-turbo-0125', label: 'GPT-3.5 Turbo', api: 'openai' },
-    { id: 'gpt-4-1106-preview', label: 'GPT-4', api: 'openai' },
-    { id: 'gpt-4-0125-preview', label: 'GPT-4 Turbo', api: 'openai' },
+    ...Object.entries(OPEN_AI_MODELS).map(([id, label]) => ({ id, label, api: 'openai' })),
+    ...Object.entries(MISTRAL_AI_MODELS).map(([id, label]) => ({ id, label, api: 'mistralai' })),
   ]
 
   const chats = useLocalStorage<Chat[]>('chats', [])

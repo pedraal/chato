@@ -23,6 +23,27 @@ onMounted(() => {
   if (import.meta.client)
     window.sessionStorage.setItem('mdc-shiki-highlighter', 'browser')
 })
+
+const { transcript, isBusy: transcriberIsBusy, progressItems: transcriberProgressItems, sendTranscriptionRequest } = useTranscriber()
+const { audioData, setAudioFromRecording } = useRecording()
+
+// const { audioData: sampleAudioData, downloadAudioFromUrl } = useSampleAudio()
+// async function testWorker() {
+//   await downloadAudioFromUrl('/sample_fr_2.mp3')
+//   sendTranscriptionRequest(sampleAudioData.value.buffer)
+// }
+
+watch(audioData, (v) => {
+  if (v.buffer)
+    sendTranscriptionRequest(v.buffer)
+})
+
+watch(transcript, (v) => {
+  if (!v?.text?.length)
+    return
+
+  input.value = v.text
+})
 </script>
 
 <template>
@@ -46,9 +67,35 @@ onMounted(() => {
     <div ref="messagesContainer" class="grow p-4 overflow-y-auto">
       <ChatMessage v-for="message in activeChat.messages" :key="message.id" :message="message" />
     </div>
+    <div v-if="transcriberProgressItems.length || transcriberIsBusy" class="p-2">
+      <template v-if="transcriberProgressItems.length">
+        <UProgress :value="transcriberProgressItems[0].progress" />
+        <p class="text-primary">
+          Loading model : {{ transcriberProgressItems[0].file }}
+        </p>
+      </template>
+      <template v-else-if="transcriberIsBusy">
+        <UProgress animation="carousel" />
+        <p class="text-primary">
+          Transcribing...
+        </p>
+      </template>
+      <!-- <div v-else class="flex gap-2">
+        <UButton @click="testWorker">
+          Test transcribe
+        </UButton>
+
+        <audio class="w-full" controls>
+          <source src="/sample_fr_2.mp3" type="audio/mp3">
+        </audio>
+      </div> -->
+    </div>
     <div class="p-2 flex gap-2">
-      <UTextarea v-model="input" class="w-full" autofocus :disabled="!apiKey || sending" :placeholder="!apiKey ? 'Open settings to add your API keys' : 'Ask something'" :ui="{ padding: { sm: 'pr-12' } }" @keydown.enter.exact.prevent="send" />
-      <UButton icon="i-heroicons-paper-airplane" @click="send" />
+      <UTextarea v-model="input" class="w-full" autofocus :disabled="!apiKey || sending || transcriberIsBusy" :placeholder="!apiKey ? 'Open settings to add your API keys' : 'Ask something'" :ui="{ padding: { sm: 'pr-12' } }" @keydown.enter.exact.prevent="send" />
+      <div class="flex flex-col gap-2">
+        <UButton icon="i-heroicons-paper-airplane" @click="send" />
+        <MicrophoneRecorder @recording-complete="setAudioFromRecording" />
+      </div>
     </div>
   </div>
 </template>

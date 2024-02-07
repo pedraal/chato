@@ -18,7 +18,7 @@ const colorOptions = [
   <UFormGroup label="Demo Mode" name="demoMode">
     <div class="flex items-center gap-2">
       <UToggle v-model="demoMode" />
-      <span class="text-sm" :class="{ 'text-gray-400 dark:text-gray-500': !demoMode }">Replace third-party API calls by a mocked stream.</span>
+      <span class="text-sm" :class="{ 'text-gray-400 dark:text-gray-500': !demoMode }">Replace third-party API calls by a mocked stream. Don't forget to add API keys to use reel LLMs.</span>
     </div>
   </UFormGroup>
 </template>

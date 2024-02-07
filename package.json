@@ -16,6 +16,7 @@
     "@nuxt/ui": "^2.12.3",
     "@nuxtjs/mdc": "^0.4.0",
     "@vueuse/integrations": "^10.7.2",
+    "@xenova/transformers": "^2.14.2",
     "openai": "^4.26.0"
   },
   "devDependencies": {

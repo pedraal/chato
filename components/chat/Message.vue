@@ -28,11 +28,11 @@ watchThrottled(
           Delete
         </a>
       </p>
-      <div v-if="message.role !== 'user'" class="prose dark:prose-invert [&_*:first-child]:mt-0 [&_*:last-child]:mb-0">
-        <MDCRenderer v-if="data" :body="data.body" :data="data.data" class="max-w-3xl" />
+      <div v-if="message.role !== 'user'" class="max-w-3xl prose dark:prose-invert [&_*:first-child]:mt-0 [&_*:last-child]:mb-0">
+        <MDCRenderer v-if="data" :body="data.body" :data="data.data" class="" />
       </div>
-      <div v-else>
-        <pre class="w-full font-sans">{{ message.content }}</pre>
+      <div v-else class="max-w-3xl">
+        <pre class="w-full font-sans whitespace-pre-wrap">{{ message.content }}</pre>
       </div>
     </div>
   </div>
